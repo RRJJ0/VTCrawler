@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev-sche": "ts-node sche/index.ts"
+    "holo-sche": "ts-node hololive/schedule/index.ts",
+    "holo-artist": "ts-node hololive/artist/index.ts"
   },
   "keywords": [],
   "author": "",

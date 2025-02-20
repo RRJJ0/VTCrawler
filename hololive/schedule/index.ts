@@ -1,6 +1,7 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { ContentRow, Artist, Content } from './model';
+import { Artist } from './model/artist';
+import { Content, ContentRow } from './model/content';
 import * as fs from 'fs';
 
 
@@ -10,25 +11,24 @@ const artists = new Array<Artist>();
 
 const scheduleUrl = "https://schedule.hololive.tv/lives"
 // 日期下面  有4個時間區段 jsp 00:00~05:59 06:00~11:59 12:00~17:59 18:00~23:59
-// cookie 內有timezone 預設 Asia/Tokyo
+// cookie 放timezone 預設 Asia/Tokyo
 // 如何區別日期 按照 div來看 不是日期的 第一個 div  col-12 col-sm-12 col-md-12  style padding-left:5px;padding-right: 5px; 裡面都會放div.navbar.navbar-inverse
 // 直到遇到下一個日期前 該container 都是同一日期
 // container 下面有3個row 1 時間 / br  2 主要內容 3 廣告
 axios.get(scheduleUrl).then(res => { 
     const $ = cheerio.load(res.data);
-    const mainSchedule = $('div#all').children('div.container');
-    var timeKey = "";
+    const mainSchedule = $('div#all').children('div.container'); 
     for (let i = 0; i < mainSchedule.length; i++) {
         const ch = mainSchedule.eq(i).children('div.row').eq(0).children('div.col-12.col-sm-12.col-md-12');
         const findDate = ch.eq(0).find('div.navbar.navbar-inverse');
         if(findDate.length > 0){
             const text = findDate.eq(0).children('div.holodule.navbar-text').text().replace(/\s/g, "");
-            // deal time    
-            timeKey = formatDate(text);
-            dateSet.push(new Content(timeKey, []));
+            // deal time     
+            dateSet.push(new Content(formatDate(text), []));
         }
 
         // deal main content
+        const timeIndex = dateSet.length - 1;
         const mainContent = ch.eq(1).children('div.row').children('div.col-6.col-sm-4.col-md-3');
         for (let j = 0; j < mainContent.length; j++) {
             const a = mainContent.eq(j).children('a');
@@ -53,13 +53,13 @@ axios.get(scheduleUrl).then(res => {
                 artistId = artists.length + 1;
                 artists.push(new Artist(artistId, name, vtImg ?? ""));
             }
-            dateSet[dateSet.length - 1].contents.push(new ContentRow(artistId, url ?? "", ytImg ?? "", time));
+            dateSet[timeIndex].contents.push(new ContentRow(artistId, url ?? "", ytImg ?? "", time));
         }
     }
 
     // exort json file
-    fs.writeFileSync('artists.json', JSON.stringify(artists));
-    fs.writeFileSync('data.json', JSON.stringify(dateSet));
+    fs.writeFileSync('hololive//schedule//output//artists.json', JSON.stringify(artists, null, 4));
+    fs.writeFileSync('hololive//schedule//output//data.json', JSON.stringify(dateSet, null, 4));
  
     console.log('done');
 }).catch(err => {
