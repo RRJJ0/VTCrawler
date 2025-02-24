@@ -1,7 +1,8 @@
 import axios from 'axios';
 import * as cheerio from 'cheerio';
-import { Artist, RelatedLink } from './model/artist';
+import { Artist, RelatedLink } from '../../shareModel/artist';
 import * as fs from 'fs';
+import { delay, getUserAgent } from '../../shareModel/prevent';
 
 const artistUrl = "https://hololive.hololivepro.com/talents"
 
@@ -46,6 +47,7 @@ axios.get(artistUrl).then(async res => {
         const name = a.children('h3').text().replace(/\s/g, "");
         const detail = await getArtistDetail(i + 1, avatar ?? "", detailUrl!);
         fs.writeFileSync('hololive//artist//output//' + name + '.json', JSON.stringify(detail, null, 4));
+        await delay();
     }
 
 
@@ -206,7 +208,10 @@ axios.get(artistUrl).then(async res => {
 </div>
 */
 const getArtistDetail = async (id: number, avatar: string, url: string): Promise<Artist> => {
-    const response = await axios.get(url);
+
+    const response = await axios.get(url, {
+        headers: getUserAgent()
+    });
     const $ = cheerio.load(response.data);  
     const mainInfo = $('body.in').children('div#container').children('main');
     const artist = new Artist(
