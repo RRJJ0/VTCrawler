@@ -1,13 +1,11 @@
 import axios from 'axios';
-import * as cheerio from 'cheerio';
-import { Artist } from './model/artist';
-import { Content, ContentRow } from './model/content';
+import * as cheerio from 'cheerio'; 
+import { Content, ContentRow } from '../../shareModel/schedule';
 import * as fs from 'fs';
 
 
 
-const dateSet = new Array<Content>();
-const artists = new Array<Artist>();
+const dateSet = new Array<Content>(); 
 
 const scheduleUrl = "https://schedule.hololive.tv/lives"
 // 日期下面  有4個時間區段 jsp 00:00~05:59 06:00~11:59 12:00~17:59 18:00~23:59
@@ -47,18 +45,13 @@ axios.get(scheduleUrl).then(res => {
 
             // vt image
             const vtImg = c.eq(2).children('div.row.no-gutters.justify-content-between').children('div').children('img').attr('src');
-            
-            var artistId = findArtistId(name);
-            if (artistId == -1) {
-                artistId = artists.length + 1;
-                artists.push(new Artist(artistId, name, vtImg ?? ""));
-            }
+            // get artist id from artistData
+            var artistId = -1;
             dateSet[timeIndex].contents.push(new ContentRow(artistId, url ?? "", ytImg ?? "", time));
         }
     }
 
-    // exort json file
-    fs.writeFileSync('hololive//schedule//output//artists.json', JSON.stringify(artists, null, 4));
+    // exort json file 
     fs.writeFileSync('hololive//schedule//output//data.json', JSON.stringify(dateSet, null, 4));
  
     console.log('done');
@@ -91,12 +84,4 @@ const formatDate = (input: string): string => {
   };
   
 
-
-const findArtistId = (name: string): number => {
-    for (let i = 0; i < artists.length; i++) {
-        if (artists[i].name === name) {
-            return artists[i].id;
-        }
-    }
-    return -1;
-}   
+ 
