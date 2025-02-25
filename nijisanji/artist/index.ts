@@ -40,6 +40,9 @@ axios.get<NUJIJson>(artistJson).then(async res => {
 
 
     console.log('done');
+}).catch(err => {
+    console.log(err);
+    process.exit(1);
 })
 
 const getDetail = async (id: number, avatar: string, slug: string): Promise<Artist> => {

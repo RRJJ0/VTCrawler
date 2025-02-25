@@ -55,8 +55,9 @@ axios.get(scheduleUrl).then(res => {
         const value = dateSet[i]; 
         fs.writeFileSync('hololive//schedule//output//' + value.date.replace(/\//g, "-") + '.json', JSON.stringify(value.contents, null, 4));
      
-        console.log('done');
+       
     }
+    console.log('done');
     
 }).catch(err => {
     console.log(err);
