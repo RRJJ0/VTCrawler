@@ -44,10 +44,15 @@ axios.get(scheduleUrl).then(res => {
             const ytImg = c.eq(1).children('img').attr('src'); 
 
             // vt image
-            const vtImg = c.eq(2).children('div.row.no-gutters.justify-content-between').children('div').children('img').attr('src');
-            // get artist id from artistData
-            var artistId = -1;
-            dateSet[timeIndex].contents.push(new ContentRow(artistId, url ?? "", ytImg ?? "", time));
+            const livers: Array<string> = [];
+            const vtImg = c.eq(2).children('div.row.no-gutters.justify-content-between').children('div').each((i, el) => {
+                const img = $(el).children('img').attr('src');
+                if(img) {
+                    livers.push(img);
+                }
+            })
+     
+            dateSet[timeIndex].contents.push(new ContentRow(name, livers, url ?? "", ytImg ?? "", time));
         }
     }
     for(let i = 0; i < dateSet.length; i++) {

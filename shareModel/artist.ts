@@ -1,7 +1,7 @@
 
 
 export class Artist {
-    public id: number;
+    public id: number | string;
     public avatar: string;
     public jpName: string;
     public enName: string;
@@ -13,7 +13,7 @@ export class Artist {
     public relatedLinks: Array<RelatedLink>;
     
     
-    constructor(id: number, avatar: string, jpName: string, enName: string, slogan: string, introduction: string, style: Array<string>, video: string, audio: string, relatedLinks: Array<RelatedLink>) {
+    constructor(id: number | string, avatar: string, jpName: string, enName: string, slogan: string, introduction: string, style: Array<string>, video: string, audio: string, relatedLinks: Array<RelatedLink>) {
         this.id = id;
         this.avatar = avatar;
         this.jpName = jpName;

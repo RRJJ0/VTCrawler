@@ -22,7 +22,7 @@ axios.get<NUJIJson>(artistJson).then(async res => {
     for (var i = 0; i < res.data.pageProps.allLivers.length; i++) {
         const liver = res.data.pageProps.allLivers[i];
         await delay(2000, 5000); 
-        const art = await getDetail(-1, base + liver.images.head.url, liver.slug)
+        const art = await getDetail(liver.id, base + liver.images.head.url, liver.slug)
         if (art) {
             dataSet[liver.profile.affiliation[0]].push(art);
         }
@@ -45,7 +45,7 @@ axios.get<NUJIJson>(artistJson).then(async res => {
     process.exit(1);
 })
 
-const getDetail = async (id: number, avatar: string, slug: string): Promise<Artist> => {
+const getDetail = async (id: string, avatar: string, slug: string): Promise<Artist> => {
     console.log('Get Artist Detail: ' + slug);
     const art = new Artist(id, avatar, "", "", "", "", [], "", "", []);
     

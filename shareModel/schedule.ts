@@ -10,13 +10,15 @@ export class Content {
 }
 
 export class ContentRow {
-    public artistId: number; 
+    public title: string;
+    public artists: Array<number | string>; 
     public url: string;
     public imageUrl: string; 
     public time: string;
     
-    constructor(artistId: number, url: string, imageUrl: string, time: string) {
-        this.artistId = artistId;
+    constructor(title: string, artists: Array<number | string>, url: string, imageUrl: string, time: string) {
+        this.title = title;
+        this.artists = artists;
         this.url = url;
         this.imageUrl = imageUrl;
         this.time = time;
