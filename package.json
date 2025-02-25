@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "holo-sche": "ts-node hololive/schedule/index.ts",
-    "holo-artist": "ts-node hololive/artist/index.ts"
+    "holo-artist": "ts-node hololive/artist/index.ts",
+    "niji-artist": "ts-node nijisanji/artist/index.ts"
   },
   "keywords": [],
   "author": "",
