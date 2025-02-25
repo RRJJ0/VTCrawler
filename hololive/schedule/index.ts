@@ -50,11 +50,14 @@ axios.get(scheduleUrl).then(res => {
             dateSet[timeIndex].contents.push(new ContentRow(artistId, url ?? "", ytImg ?? "", time));
         }
     }
-
-    // exort json file 
-    fs.writeFileSync('hololive//schedule//output//data.json', JSON.stringify(dateSet, null, 4));
- 
-    console.log('done');
+    for(let i = 0; i < dateSet.length; i++) {
+        // exort json file 
+        const value = dateSet[i]; 
+        fs.writeFileSync('hololive//schedule//output//' + value.date.replace(/\//g, "-") + '.json', JSON.stringify(value.contents, null, 4));
+     
+        console.log('done');
+    }
+    
 }).catch(err => {
     console.log(err);
     process.exit(1);
