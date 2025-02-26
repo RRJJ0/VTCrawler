@@ -9,6 +9,7 @@ import * as fs from 'fs';
 const base = "https://www.nijisanji.jp"
 const artistUrl = base + "/talents?filter=nijisanji"
 const artistJson = base + "/_next/data/_v-AX7HkMUtNEj0TXCJmU/ja/talents.json"  // 不知道這個啥時會不能用 :)
+const artistApi = base + "/api/talents"
 
 const detail = base + "/talents/l/" // 最後面帶入 json 的 slug 
 
