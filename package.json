@@ -8,7 +8,9 @@
     "holo-sche": "ts-node hololive/schedule/index.ts",
     "holo-artist": "ts-node hololive/artist/index.ts",
     "niji-artist": "ts-node nijisanji/artist/index.ts",
-    "niji-sche": "ts-node nijisanji/schedule/index.ts"
+    "niji-sche": "ts-node nijisanji/schedule/index.ts",
+    "vspo-artist": "ts-node vspo/artist/index.ts",
+    "vspo-sche": "ts-node vspo/schedule/index.ts"
   },
   "keywords": [],
   "author": "",
