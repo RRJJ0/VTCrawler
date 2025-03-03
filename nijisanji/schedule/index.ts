@@ -1,10 +1,10 @@
 
-import axios from 'axios';
-import * as cheerio from 'cheerio'; 
+import axios from 'axios'; 
 import { Content, ContentRow } from '../../shareModel/schedule';
 import * as fs from 'fs';
 import { delay, getUserAgent } from '../../shareModel/prevent';
 import { ScheduleData } from './model/scheduel';
+import { getOffsetDateString } from '../../shareModel/dateOffset';
 
 const base = "https://www.nijisanji.jp"
 
@@ -15,12 +15,6 @@ const scheduleApi = base + "/api/streams?day_offset=" // :) day_offset 今天往
 const scheduleRowDetailApi = base + "/api/streams-detail?id=" // 上面 api 裡面Row id
 
 
-enum OffsetUnit {
-    Day = 0,
-    Month = 1,
-    Year = 2
-}
- 
 
 async function main() { 
 
@@ -59,23 +53,6 @@ async function main() {
     console.log('done');
 }
 
-const getOffsetDateString = (offset: number, unit: OffsetUnit = OffsetUnit.Day, date: Date = new Date()): string => {
- 
-    const newDate = new Date(date);
 
-    switch (unit) {
-        case OffsetUnit.Day:
-            newDate.setDate(newDate.getDate() + offset);
-            break;
-        case OffsetUnit.Month:
-            newDate.setMonth(newDate.getMonth() + offset);
-            break;
-        case OffsetUnit.Year:
-            newDate.setFullYear(newDate.getFullYear() + offset);
-            break;
-    }
-
-    return newDate.toLocaleDateString('ja-JP', { year: 'numeric', month: '2-digit', day: '2-digit' });
-}
 
 main();
