@@ -7,8 +7,7 @@ import { RelatedLink } from '../../shareModel/artist';
 import * as fs from 'fs';
 
 const base = "https://www.nijisanji.jp"
-const artistUrl = base + "/talents?filter=nijisanji"
-const artistJson = base + "/_next/data/_v-AX7HkMUtNEj0TXCJmU/ja/talents.json"  // 不知道這個啥時會不能用 :)
+const artistUrl = base + "/talents?filter=nijisanji" 
 const artistApi = base + "/api/talents"
 
 const detail = base + "/talents/l/" // 最後面帶入 json 的 slug 
@@ -18,10 +17,14 @@ var dataSet: Record<string, Array<Artist>> = {
     'NIJISANJI EN': [],     
     'VirtuaReal': []
 }
-axios.get<NUJIJson>(artistJson).then(async res => {   
-    
-    for (var i = 0; i < res.data.pageProps.allLivers.length; i++) {
-        const liver = res.data.pageProps.allLivers[i];
+axios.get(artistUrl).then(async res => {   
+
+    const $ = cheerio.load(res.data);
+    const data = $('#__NEXT_DATA__').text() 
+    const json = JSON.parse(data) as NUJIJson;
+
+    for (var i = 0; i < json.props.pageProps.allLivers.length; i++) {
+        const liver = json.props.pageProps.allLivers[i];
         await delay(2000, 5000); 
         const art = await getDetail(liver.id, base + liver.images.head.url, liver.slug)
         if (art) {
